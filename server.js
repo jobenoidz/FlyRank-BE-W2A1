@@ -38,9 +38,7 @@ app.get('/tasks/:id', (req, res) => {
     res.json(task)
 })
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
-});
+
 
 //Stage 3
 app.post('/tasks', (req, res) => {
@@ -56,3 +54,56 @@ app.post('/tasks', (req, res) => {
     tasks.push(new_task);
     res.status(201).json(new_task);
 })
+
+//Stage 4
+
+app.put('/tasks/:id', (req, res) => {
+    const id = Number(req.params.id);
+    const task = tasks.find((t) => t.id === id);
+
+    const { title, done } = req.body;
+
+    if (!task) {
+        return res.status(404).json({ error: `Task ${id} not found` })
+    }
+
+    if (!req.body || Object.keys(req.body).length === 0) {
+        return res.status(400).json({ error: "No Title and Done status found." });
+    }
+
+    if (title !== undefined) {
+        if (title === "" || title === null) {
+            return res.status(400).json({ error: "Title missing" })
+        };
+        task.title = title;
+    };
+
+    if (done !== undefined) {
+        if (typeof done !== 'boolean') {
+            return res.status(400).json({ error: "Invalid Done value" })
+        };
+        task.done = done;
+    };
+
+    res.status(200).json(task);
+})
+
+app.delete('/tasks/:id', (req, res) => {
+    const id = Number(req.params.id);
+    const task = tasks.findIndex((t) => t.id === id);
+
+    if (task === -1) {
+        return res.status(404).json({ error: `Task ${id} not found` })
+    }
+
+    tasks.splice(task, 1);
+    res.status(204).send();
+})
+
+
+
+
+
+app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`);
+});
