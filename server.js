@@ -12,7 +12,6 @@ const INIT_TASKS = [
 
 const tasks = INIT_TASKS.map((task) => ({ ...task }));
 
-
 //Stage 1
 app.get('/', (req, res) => {
     res.json({ "name": "Task API", "version": "1.0", "endpoints": ["/tasks"] });
@@ -42,3 +41,18 @@ app.get('/tasks/:id', (req, res) => {
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });
+
+//Stage 3
+app.post('/tasks', (req, res) => {
+    const { title } = req.body;
+
+    if (title === "" || title === null || title === undefined) {
+        return res.status(400).json({ error: "Title missing" })
+    };
+
+    const last_id = tasks.length === 0 ? 1 : Math.max(...tasks.map((t) => t.id));
+    const new_task = { id: (last_id + 1), title: title, done: false };
+
+    tasks.push(new_task);
+    res.status(201).json(new_task);
+})
