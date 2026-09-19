@@ -2,7 +2,7 @@
   "openapi": "3.0.2",
   "info": {
     "title": "Sample CRUD",
-    "description": "Sample CRUD API for a To-do List",
+    "description": "Sample CRUD API for a To-do List. Coded by John Benedict L. Aguirre",
     "version": "1.0.0"
   },
   "servers": [
