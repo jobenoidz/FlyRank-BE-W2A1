@@ -1,8 +1,14 @@
 const express = require('express');
 const app = express();
+const swaggerUi = require('swagger-ui-express');
+const swaggerDoc = require('./swagger.json');
+
+
+
 const port = 3000;
 
 app.use(express.json());
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc))
 
 const INIT_TASKS = [
     { id: 1, title: "Cook breakfast", done: false },
@@ -42,13 +48,16 @@ app.get('/tasks/:id', (req, res) => {
 
 //Stage 3
 app.post('/tasks', (req, res) => {
+    if (req.body === undefined || req.body === null || typeof req.body !== 'object') {
+        return res.status(400).json({ error: "Missing body" })
+    }
     const { title } = req.body;
 
-    if (title === "" || title === null || title === undefined) {
+    if (title === "" || title === " " || title === null || title === undefined) {
         return res.status(400).json({ error: "Title missing" })
     };
 
-    const last_id = tasks.length === 0 ? 1 : Math.max(...tasks.map((t) => t.id));
+    const last_id = tasks.length === 0 ? 0 : Math.max(...tasks.map((t) => t.id));
     const new_task = { id: (last_id + 1), title: title, done: false };
 
     tasks.push(new_task);
@@ -72,8 +81,8 @@ app.put('/tasks/:id', (req, res) => {
     }
 
     if (title !== undefined) {
-        if (title === "" || title === null) {
-            return res.status(400).json({ error: "Title missing" })
+        if (title === "" || title === null || typeof title !== 'string') {
+            return res.status(400).json({ error: "Invalid Title" })
         };
         task.title = title;
     };
