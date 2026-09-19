@@ -8,7 +8,7 @@ const swaggerDoc = require('./swagger.json');
 const port = 3000;
 
 app.use(express.json());
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc))
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc))
 
 const INIT_TASKS = [
     { id: 1, title: "Cook breakfast", done: false },
