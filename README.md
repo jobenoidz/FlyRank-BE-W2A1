@@ -1,5 +1,6 @@
 # FlyRank-BE-W2A1
 First CRUD API Assignment for FlyRank Backend Internship
+Submitted by John Benedict L. Aguirre
 
 This repo contains a sample CRUD API for a to-do list where a user can view, create, update, or delete a task. SwaggerUI is also included to provide a GUI for testing the different endpoints of the API.
 
